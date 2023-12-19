@@ -1,3 +1,4 @@
+'use client'
 import {
   NavbarContent,
   NavbarMenu,
@@ -12,6 +13,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { Button } from "@nextui-org/button";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { Link } from "@nextui-org/link";
+import { signIn, signOut } from "next-auth/react"
 
 const NavBarLeftContent: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
@@ -52,13 +54,13 @@ const NavBarLeftContent: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) =>
                 <Link href="/user-profile">Profile</Link>
               </DropdownItem>
               <DropdownItem>
-                <Button>Logout</Button>
+                <Button onClick={() => signOut()}>Logout</Button>
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         ) : (
           <NavbarItem>
-            <Button>Login</Button>
+            <Button onClick={() => signIn()}>Login</Button>
           </NavbarItem>
         )}
       </NavbarContent>

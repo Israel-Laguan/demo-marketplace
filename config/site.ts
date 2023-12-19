@@ -19,20 +19,12 @@ export const siteConfig = {
 	],
 	navMenuItems: [
 		{
-			label: "Profile",
-			href: "/profile",
-		},
-		{
 			label: "Dashboard",
 			href: "/dashboard",
 		},
 		{
 			label: "Settings",
 			href: "/settings",
-		},
-		{
-			label: "Logout",
-			href: "/logout",
 		},
 	],
 	footerItems: [
