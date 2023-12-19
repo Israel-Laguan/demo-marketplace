@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   NavbarContent,
   NavbarMenu,
@@ -11,12 +11,18 @@ import { siteConfig } from "@/config/site";
 import { ChevronDown, TagUser } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Button } from "@nextui-org/button";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/dropdown";
 import { Link } from "@nextui-org/link";
-import { signIn, signOut } from "next-auth/react"
+import { signIn, signOut } from "next-auth/react";
 
-const NavBarLeftContent: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
-
+const NavBarLeftContent: React.FC<{ isLoggedIn: boolean }> = ({
+  isLoggedIn,
+}) => {
   const userIcons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
     user: <TagUser className="text-danger" fill="currentColor" size={30} />,
@@ -80,8 +86,8 @@ const NavBarLeftContent: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) =>
                     index === 2
                       ? "primary"
                       : index === siteConfig.navMenuItems.length - 1
-                        ? "danger"
-                        : "foreground"
+                      ? "danger"
+                      : "foreground"
                   }
                   size="lg"
                 >

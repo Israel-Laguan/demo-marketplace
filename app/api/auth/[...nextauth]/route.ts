@@ -1,7 +1,7 @@
-import { authenticate } from "@/services/authService";
 import NextAuth from "next-auth";
 import type { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { authenticate } from "@/services/authService";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -30,26 +30,25 @@ export const authOptions: AuthOptions = {
   ],
   session: { strategy: "jwt" },
   callbacks: {
-    async session ({ session, token }) {
-      const sanitizedToken = Object.keys(token).reduce((p, c) => {
+    async session({ session, token }) {
+      const sanitizedToken = Object.keys(token).reduce((previous, current) => {
         // strip unnecessary properties
         if (
-          c !== "iat" &&
-          c !== "exp" &&
-          c !== "jti" &&
-          c !== "apiToken"
+          current !== "iat" &&
+          current !== "exp" &&
+          current !== "jti" &&
+          current !== "apiToken"
         ) {
-          return { ...p, [c]: token[c] }
-        } else {
-          return p
+          return { ...previous, [current]: token[current] };
         }
-      }, {})
-      return { ...session, user: sanitizedToken, apiToken: token.apiToken }
+        return previous;
+      }, {});
+      return { ...session, user: sanitizedToken, apiToken: token.apiToken };
     },
-    async jwt ({ token }) {
-      return token
-    }
-  }
+    async jwt({ token }) {
+      return token;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
