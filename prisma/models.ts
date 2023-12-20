@@ -3,7 +3,7 @@ interface User {
   id: string;
   email: string;
   password: string;
-  role: 'admin' | 'client' | string;
+  role: "admin" | "client" | string;
 }
 
 // Product interface
