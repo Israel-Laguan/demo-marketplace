@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    hostname: postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_DB: quiet-lux
+      POSTGRES_HOST: postgres
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_DB_SSLMODE: ${POSTGRES_DB_SSLMODE:-disable}
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
