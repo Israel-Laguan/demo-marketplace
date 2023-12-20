@@ -1,5 +1,6 @@
 import { hashPassword } from '@/services/cryptoService';
 import { Prisma, PrismaClient } from '@prisma/client';
+import { User, Product, Bag } from './models';
 
 export const prisma = new PrismaClient();
 

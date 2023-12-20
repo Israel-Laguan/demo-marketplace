@@ -1,5 +1,5 @@
 // User interface
-interface User {
+export interface User {
   id: string;
   email: string;
   password: string;
@@ -7,7 +7,7 @@ interface User {
 }
 
 // Product interface
-interface Product {
+export interface Product {
   id: string;
   name: string;
   description: string;
@@ -18,7 +18,7 @@ interface Product {
 }
 
 // Bag interface
-interface Bag {
+export interface Bag {
   id: string;
   userId: string;
 }
