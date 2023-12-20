@@ -20,17 +20,3 @@ services:
       timeout: 5s
       retries: 5
 
-  dbeaver:
-    image: dbeaver/cloudbeaver:23
-    container_name: cloudbeaver
-    restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "8200:8978"
-    volumes:
-      - dbeaver-data:/opt/dbeaver/data
-
-volumes:
-  dbeaver-data:
