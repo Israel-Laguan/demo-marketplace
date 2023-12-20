@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    hostname: postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_DB: quiet-lux
+      POSTGRES_HOST: postgres
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_DB_SSLMODE: ${POSTGRES_DB_SSLMODE:-disable}
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dbeaver:
+    image: dbeaver/cloudbeaver:23
+    container_name: cloudbeaver
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8200:8978"
+    volumes:
+      - dbeaver-data:/opt/dbeaver/data
+
+volumes:
+  dbeaver-data:
