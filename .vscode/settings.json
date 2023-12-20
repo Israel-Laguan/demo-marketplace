@@ -11,5 +11,8 @@
       "username": "postgres",
       "password": "password"
     }
+  ],
+  "cSpell.words": [
+    "NEXTAUTH"
   ]
 }
