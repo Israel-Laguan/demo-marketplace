@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node --transpile-only --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@nextui-org/button": "2.0.26",
     "@nextui-org/card": "^2.0.24",
@@ -22,6 +25,7 @@
     "@nextui-org/switch": "2.0.25",
     "@nextui-org/system": "2.0.15",
     "@nextui-org/theme": "2.1.17",
+    "@prisma/client": "^5.7.1",
     "@react-aria/ssr": "^3.8.0",
     "@react-aria/visually-hidden": "^3.8.6",
     "@types/node": "20.5.7",
@@ -42,5 +46,9 @@
     "tailwind-variants": "^0.1.18",
     "tailwindcss": "3.3.5",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "prisma": "^5.7.1",
+    "ts-node": "^10.9.2"
   }
 }
