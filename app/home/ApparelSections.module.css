@@ -1,0 +1,47 @@
+.apparelSection {
+    @apply py-16 px-4;
+}
+
+.apparelSection__sections {
+    @apply max-w-6xl mx-auto;
+}
+
+.apparelSection__title {
+    @apply text-3xl font-bold text-center mb-8;
+}
+
+.apparelSection__description {
+    @apply text-center text-gray-600 mb-8;
+}
+
+.apparelSection__productContainer {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8;
+}
+
+.apparelSection__product {
+    @apply flex flex-col items-center cursor-pointer w-64 h-full;
+}
+
+.apparelSection__productPromo {
+    @apply bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large z-50 top-1 shadow-small ml-1 w-max backdrop:blur-2xl
+}
+
+.apparelSection__productName {
+    @apply text-white text-lg font-bold mb-2;
+}
+
+.apparelSection__productPriceContainer {
+    @apply flex items-center mb-2;
+}
+
+.apparelSection__productPrice {
+    @apply text-white text-lg mb-2;
+}
+
+.apparelSection__productDescription {
+    @apply text-white text-sm mb-2;
+}
+
+.apparelSection__productPriceDiscount {
+    @apply text-red-500 text-xs ml-2 mb-2 line-through;
+}

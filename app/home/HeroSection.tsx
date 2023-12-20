@@ -3,7 +3,7 @@ import { title } from '../../components/primitives';
 const HeroSection: React.FC = () => {
   return (
     <div
-      className="bg-blue-300 py-16 px-4 rounded"
+      className="py-16 px-4 rounded"
     >
       <div className="max-w-2xl mx-auto text-center">
         <h1 className={title({ size: 'lg' })}>
