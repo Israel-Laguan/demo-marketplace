@@ -1,7 +1,7 @@
 import { hashPassword } from '@/services/cryptoService';
 import { Prisma, PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 // Create user
 export async function createUser(data: User): Promise<User> {
