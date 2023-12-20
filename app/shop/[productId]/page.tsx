@@ -42,7 +42,7 @@ export default function BagPage() {
             <p className={styles.productDescription}>{product.description}</p>
             <p className={styles.productPrice}>
               Price: ${product.price}{" "}
-              {product.discount && (
+              {product.discount !== undefined && product.discount > 0 && (
                 <span className={styles.productDiscount}>
                   ${(product.price + product.discount).toFixed(2)}
                 </span>

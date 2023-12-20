@@ -91,7 +91,7 @@ const ApparelSections: React.FC = () => {
                   <span className={styles.apparelSection__productPrice}>
                     ${item.price}
                   </span>
-                  {item.discount && (
+                  {item.discount !== undefined && item.discount > 0 && (
                     <span
                       className={styles.apparelSection__productPriceDiscount}
                     >
