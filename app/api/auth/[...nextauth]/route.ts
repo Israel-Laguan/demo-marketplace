@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
             credentials.email,
             credentials.password
           );
-          if (typeof res !== "undefined") {
+          if (typeof res !== "undefined" && res) {
             return { ...res.user };
           } else {
             return null;

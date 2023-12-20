@@ -8,7 +8,7 @@ export interface User {
 
 // Product interface
 export interface Product {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   price: number;
@@ -19,6 +19,6 @@ export interface Product {
 
 // Bag interface
 export interface Bag {
-  id: string;
+  id?: string;
   userId: string;
 }

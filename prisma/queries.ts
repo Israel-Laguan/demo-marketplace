@@ -5,7 +5,7 @@ import { User, Product, Bag } from './models';
 export const prisma = new PrismaClient();
 
 // Create user
-export async function createUser(data: User): Promise<User> {
+export async function createUser(data: Omit<User, 'id'>): Promise<User> {
   const user = await prisma.user.create({
     data: {
       ...data,
