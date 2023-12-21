@@ -3,24 +3,50 @@ import { promisify } from "node:util";
 
 const pbkdf2 = promisify(crypto.pbkdf2);
 
-const secretKey = process.env.NEXTAUTH_SECRET;
+const SALT_LENGTH = 16;
+const HASH_ITERATIONS = 10000;
+const HASH_ALGORITHM = "sha512";
 
-if (!secretKey) {
-  throw new Error("NEXTAUTH_SECRET environment variable is not set");
-}
-
+/**
+ * Hashes the password using PBKDF2 with a random salt.
+ * @param password - The password to hash.
+ * @returns A string containing the salt and hashed password.
+ */
 export async function hashPassword(password: string): Promise<string> {
-  const salt = crypto.randomBytes(16).toString("hex");
-  const hashedPassword = await pbkdf2(password, salt, 10000, 64, "sha512");
+  const salt = crypto.randomBytes(SALT_LENGTH).toString("utf8");
+  const hashedPassword = await pbkdf2(
+    password,
+    salt,
+    HASH_ITERATIONS,
+    64, // 64 bytes is 512 bits
+    HASH_ALGORITHM
+  );
 
-  return `${salt}:${hashedPassword}`;
+  return `${salt}:${hashedPassword.toString("utf8")}`;
 }
 
+/**
+ * Validates a password against a hashed password.
+ * @param attemptedPassword - The password to validate.
+ * @param hashedPassword - The stored hashed password.
+ * @returns A boolean indicating whether the password is valid.
+ */
 export async function validatePassword(
   attemptedPassword: string,
   hashedPassword: string
 ): Promise<boolean> {
   const [salt, storedHash] = hashedPassword.split(":");
-  const newHash = await pbkdf2(attemptedPassword, salt, 100000, 64, "sha512");
-  return newHash.toString("hex") === storedHash;
+  const newHash = await pbkdf2(
+    attemptedPassword,
+    salt,
+    HASH_ITERATIONS,
+    64,
+    HASH_ALGORITHM
+  );
+
+  const passwordComparison = newHash.toString("utf8") === storedHash;
+
+  if (!passwordComparison)
+    console.error({ attempted: newHash.toString("utf8"), storedHash });
+  return passwordComparison;
 }

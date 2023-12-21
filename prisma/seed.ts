@@ -1,30 +1,38 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { initialProducts } from "./productData";
+import { initialUsers } from "./usersData";
+import { hashPassword } from "../services/cryptoService";
 
 const prisma = new PrismaClient();
 
+const hashUsersPassword = async (users: Prisma.UserCreateManyInput[]) => {
+  const hashedUsersPasswords: any = await Promise.all(
+    users.map(async (user) => {
+      const hashedPassword = await hashPassword(user.password).catch(
+        (error) => {
+          throw Error(error);
+        }
+      );
+      const updatedUser = {
+        ...user,
+        password: hashedPassword,
+      };
+      return updatedUser;
+    })
+  );
+  return hashedUsersPasswords;
+};
+
 async function main() {
   await prisma.product.createMany({
-    data: initialProducts
+    data: initialProducts,
   });
+  const users = await hashUsersPassword(initialUsers);
+
+  if (users.length < 1)
+    throw Error("Hashing passwords failed, please try again");
   await prisma.user.createMany({
-    data: [
-      {
-        email: "admin@quiet-lux.com",
-        password: "securepassword",
-        role: "admin",
-      },
-      {
-        email: "client1@quiet-lux.com",
-        password: "client1password",
-        role: "client",
-      },
-      {
-        email: "client2@quiet-lux.com",
-        password: "client2password",
-        role: "client",
-      },
-    ],
+    data: users,
   });
 
   const clientId1 = await prisma.user.findUnique({
@@ -32,7 +40,7 @@ async function main() {
     select: { id: true },
   });
 
-  if (!clientId1?.id) return;
+  if (!clientId1?.id) throw Error("Client needed is not found");
 
   const productIds = await prisma.product.findMany({
     select: { id: true },
