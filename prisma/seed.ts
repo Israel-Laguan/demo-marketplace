@@ -6,7 +6,7 @@ import { hashPassword } from "../services/cryptoService";
 const prisma = new PrismaClient();
 
 const hashUsersPassword = async (users: Prisma.UserCreateManyInput[]) => {
-  const hashedUsersPasswords: any = await Promise.all(
+  const hashedUsersPasswords = await Promise.all(
     users.map(async (user) => {
       const hashedPassword = await hashPassword(user.password).catch(
         (error) => {
@@ -18,7 +18,7 @@ const hashUsersPassword = async (users: Prisma.UserCreateManyInput[]) => {
         password: hashedPassword,
       };
       return updatedUser;
-    })
+    }) as Promise<Prisma.UserCreateManyInput>[]
   );
   return hashedUsersPasswords;
 };
