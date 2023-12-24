@@ -1,11 +1,11 @@
-import { hashPassword } from '@/services/cryptoService';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { User, Product, Bag } from './models';
+import { hashPassword } from "@/services/cryptoService";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { User, Product, Bag } from "./models";
 
 export const prisma = new PrismaClient();
 
 // Create user
-export async function createUser(data: Omit<User, 'id'>): Promise<User> {
+export async function createUser(data: Omit<User, "id">): Promise<User> {
   const user = await prisma.user.create({
     data: {
       ...data,
@@ -23,7 +23,10 @@ export async function getUsers(where?: Prisma.UserWhereInput): Promise<User[]> {
 }
 
 // Update user
-export async function updateUser(id: string, data: Partial<User>): Promise<User> {
+export async function updateUser(
+  id: string,
+  data: Partial<User>
+): Promise<User> {
   const user = await prisma.user.update({
     where: { id },
     data: {
@@ -49,13 +52,25 @@ export async function createProduct(data: Product): Promise<Product> {
 }
 
 // Read products
-export async function getProducts(where?: Prisma.ProductWhereInput): Promise<Product[]> {
-  const products = await prisma.product.findMany({ where });
+export async function getProducts(
+  where?: Prisma.ProductWhereInput,
+  page: number = 0,
+  pageSize: number = 10,
+): Promise<Product[]> {
+  const skip = (page - 1) * pageSize;
+  const products = await prisma.product.findMany({
+    where,
+    skip,
+    take: pageSize,
+  });
   return products;
 }
 
 // Update product
-export async function updateProduct(id: string, data: Partial<Product>): Promise<Product> {
+export async function updateProduct(
+  id: string,
+  data: Partial<Product>
+): Promise<Product> {
   const product = await prisma.product.update({
     where: { id },
     data,
@@ -77,8 +92,13 @@ export async function createBag(data: Bag): Promise<Bag> {
 }
 
 // Read bags
-export async function getBags(where?: Prisma.BagWhereInput): Promise<Bag[]> {
-  const bags = await prisma.bag.findMany({ where });
+export async function getBags(
+  where?: Prisma.BagWhereInput,
+  page: number = 0,
+  pageSize: number = 10
+): Promise<Bag[]> {
+  const skip = (page - 1) * pageSize;
+  const bags = await prisma.bag.findMany({ where, skip, take: pageSize });
   return bags;
 }
 

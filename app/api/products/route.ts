@@ -2,9 +2,12 @@ import { NextResponse as res } from "next/server";
 import { createProduct, getProducts } from "@/prisma/queries";
 import { NextApiRequest } from "next/types";
 
-export async function GET() {
+export async function GET(req: NextApiRequest) {
   try {
-    const products = await getProducts();
+    const { page = 1, pageSize = 10 } = req.query;
+    const parsedPage = parseInt(page as string, 10);
+    const parsedPageSize = parseInt(pageSize as string, 10);
+    const products = await getProducts({}, parsedPage, parsedPageSize);
 
     return res.json({ data: products }, { status: 200 });
   } catch (error) {
