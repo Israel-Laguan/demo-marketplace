@@ -13,16 +13,16 @@ const HASH_ALGORITHM = "sha512";
  * @returns A string containing the salt and hashed password.
  */
 export async function hashPassword(password: string): Promise<string> {
-  const salt = crypto.randomBytes(SALT_LENGTH).toString("utf8");
+  const salt = crypto.randomBytes(SALT_LENGTH).toString("base64");
   const hashedPassword = await pbkdf2(
     password,
-    salt,
+    Buffer.from(salt, "base64"),
     HASH_ITERATIONS,
     64, // 64 bytes is 512 bits
     HASH_ALGORITHM
   );
 
-  return `${salt}:${hashedPassword.toString("utf8")}`;
+  return `${salt}:${hashedPassword.toString("base64")}`;
 }
 
 /**
@@ -38,15 +38,15 @@ export async function validatePassword(
   const [salt, storedHash] = hashedPassword.split(":");
   const newHash = await pbkdf2(
     attemptedPassword,
-    salt,
+    Buffer.from(salt, "base64"),
     HASH_ITERATIONS,
     64,
     HASH_ALGORITHM
   );
 
-  const passwordComparison = newHash.toString("utf8") === storedHash;
+  const passwordComparison = newHash.toString("base64") === storedHash;
 
   if (!passwordComparison)
-    console.error({ attempted: newHash.toString("utf8"), storedHash });
+    console.error({ attempted: newHash.toString("base64"), storedHash });
   return passwordComparison;
 }
