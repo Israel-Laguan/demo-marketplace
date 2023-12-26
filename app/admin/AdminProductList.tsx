@@ -33,6 +33,7 @@ const AdminProductList: React.FC<{ products: Product[] }> = ({ products }) => {
           <TableColumn>Description</TableColumn>
           <TableColumn>Price</TableColumn>
           <TableColumn>Quantity</TableColumn>
+          <TableColumn>Discount</TableColumn>
           <TableColumn>Images</TableColumn>
           <TableColumn>Is Hidden</TableColumn>
           <TableColumn>Action</TableColumn>
@@ -44,6 +45,7 @@ const AdminProductList: React.FC<{ products: Product[] }> = ({ products }) => {
               <TableCell>{product.description}</TableCell>
               <TableCell>${product.price.toFixed(2)}</TableCell>
               <TableCell>{product.quantity}</TableCell>
+              <TableCell>{product.discount?.toFixed(2)}%</TableCell>
               <TableCell>{product.images.length}</TableCell>
               <TableCell>
                 <Checkbox

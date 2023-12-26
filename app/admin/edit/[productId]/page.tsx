@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { title } from "@/components/primitives";
 import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -9,9 +9,10 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Product } from "@/prisma/models";
-import { useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import updateProductById from "@/actions/updateProduct";
 import deleteProductById from "@/actions/deleteProduct";
+import getProductById from "@/actions/getProduct";
 
 const productSchema = z
   .object({
@@ -20,6 +21,7 @@ const productSchema = z
     price: z.number().min(0),
     images: z.array(z.string().url()).optional(),
     quantity: z.number().min(0),
+    discount: z.number().min(0).max(100).optional(),
     isHidden: z.boolean(),
   })
   .required({
@@ -30,15 +32,15 @@ const productSchema = z
   });
 
 export default function EditProductPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const productId = searchParams.get("productId");
+  const searchParams = useParams();
+  const productId = searchParams.productId;
 
   const [isPending, startTransition] = useTransition();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<Product>({
     resolver: zodResolver(productSchema),
   });
@@ -70,8 +72,30 @@ export default function EditProductPage() {
       console.error("Error deleting product:", error);
     }
   };
+
+  // Get the product data from the server and set the form fields to the data
+  const getProductData = useCallback(async (productId: string) => {
+      try {
+        const product = await getProductById(productId);
+        console.warn(product)
+        reset(product, { keepValues: true})
+      } catch (error) {
+        console.error("Error getting product data:", error);
+        redirect("/admin");
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reset]);
+  
+
+  useEffect(() => {
+    if (typeof productId !== "string") {
+      return;
+    }
+    getProductData(productId);
+  }, [getProductData, productId]);
+
   return (
-    <div>
+    <>
       <h1 className={title()}>EditProduct {productId}</h1>
 
       <Button onClick={onDelete} color="warning">
@@ -105,6 +129,11 @@ export default function EditProductPage() {
           {errors.quantity && <p>{errors.quantity.message}</p>}
         </div>
         <div>
+          <label>Discount:</label>
+          <Input type="number" {...register('discount')} />
+          {errors.discount && <p>{errors.discount.message}</p>}
+        </div>
+        <div>
           <label>Is Hidden:</label>
           <Checkbox {...register("isHidden")} />
         </div>
@@ -116,6 +145,6 @@ export default function EditProductPage() {
           Update Product
         </Button>
       </form>
-    </div>
+    </>
   );
 }

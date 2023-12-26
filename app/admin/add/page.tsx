@@ -17,6 +17,7 @@ const productSchema = z.object({
 	price: z.number().min(0),
 	images: z.array(z.string().url()).optional(),
 	quantity: z.number().min(0),
+	discount: z.number().min(0).max(100).optional(),
 	isHidden: z.boolean(),
 }).required({
 	name: true,
@@ -71,6 +72,11 @@ export default function AddProductPage() {
 					<label>Quantity:</label>
 					<Input type="number" {...register('quantity')} />
 					{errors.quantity && <p>{errors.quantity.message}</p>}
+				</div>
+				<div>
+					<label>Discount:</label>
+					<Input type="number" {...register('discount')} />
+					{errors.discount && <p>{errors.discount.message}</p>}
 				</div>
 				<div>
 					<label>Is Hidden:</label>
