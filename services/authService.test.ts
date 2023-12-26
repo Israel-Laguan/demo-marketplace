@@ -5,7 +5,7 @@ import { validatePassword } from "./cryptoService";
 jest.mock("@/prisma/queries", () => ({
   prisma: {
     user: {
-      findUnique: jest.fn(),
+      findMany: jest.fn(),
     },
     $disconnect: jest.fn(),
   },
@@ -23,13 +23,10 @@ describe("Authentication", () => {
       password: "hashed_password",
     };
 
-    // Mocking prisma.user.findUnique
-    (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+    (prisma.user.findMany as jest.Mock).mockResolvedValue([mockUser]);
 
-    // Mocking validatePassword
     (validatePassword as jest.Mock).mockResolvedValue(true);
 
-    // Your authentication logic
     const result = await authenticate("test@example.com", "password");
 
     // Assertions
@@ -43,8 +40,7 @@ describe("Authentication", () => {
   });
 
   it("should return null if no user is found", async () => {
-    // Mocking prisma.user.findUnique
-    (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
+    (prisma.user.findMany as jest.Mock).mockResolvedValue([]);
 
     const result = await authenticate("nonexistent@example.com", "password");
 
@@ -54,12 +50,11 @@ describe("Authentication", () => {
   });
 
   it("should return null if password is invalid", async () => {
-    // Mocking prisma.user.findUnique
-    (prisma.user.findUnique as jest.Mock).mockResolvedValue({
+    (prisma.user.findMany as jest.Mock).mockResolvedValue([{
       id: "1",
       email: "test@example.com",
       password: "hashed_password",
-    });
+    }]);
 
     // Mocking validatePassword
     (validatePassword as jest.Mock).mockResolvedValue(false);
@@ -72,10 +67,9 @@ describe("Authentication", () => {
   });
 
   it("should throw an error on unexpected error", async () => {
-    // Mocking prisma.user.findUnique to throw an error
-    (prisma.user.findUnique as jest.Mock).mockRejectedValue(new Error("Unexpected error"));
+    (prisma.user.findMany as jest.Mock).mockRejectedValue(new Error("Unexpected error"));
 
-    await expect(authenticate("test@example.com", "password")).rejects.toThrowError("Authentication failed");
+    await expect(authenticate("test@example.com", "password")).rejects.toThrow("Authentication failed");
     await new Promise(resolve => process.nextTick(resolve));
     expect(prisma.$disconnect).toHaveBeenCalled();
   });

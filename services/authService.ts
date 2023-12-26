@@ -1,11 +1,14 @@
-import { prisma } from "@/prisma/queries";
 import { User } from "@/prisma/models";
 import { validatePassword } from "./cryptoService";
+import { getUsers } from "@/prisma/queries/userQueries";
 
-const authenticate = async (email: string, password: string): Promise<{ user: User; } | null> => {
+const authenticate = async (
+  email: string,
+  password: string
+): Promise<{ user: User } | null> => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
+    const [user] = await getUsers({
+      email
     });
 
     if (!user) {
@@ -21,9 +24,7 @@ const authenticate = async (email: string, password: string): Promise<{ user: Us
     return { user };
   } catch (error) {
     console.error(error);
-    throw new Error('Authentication failed');
-  } finally {
-    await prisma.$disconnect();
+    throw new Error("Authentication failed");
   }
 };
 

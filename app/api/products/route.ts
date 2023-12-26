@@ -1,5 +1,5 @@
 import { NextResponse as res } from "next/server";
-import { createProduct, getProducts } from "@/prisma/queries";
+import { createProduct, getProducts } from "@/prisma/queries/productQueries";
 import { NextApiRequest } from "next/types";
 
 export async function GET(req: NextApiRequest) {

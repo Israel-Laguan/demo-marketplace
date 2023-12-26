@@ -1,6 +1,6 @@
 import { NextResponse as res } from "next/server";
 import { NextApiRequest } from "next/types";
-import { createBag, getBags } from "@/prisma/queries";
+import { createBag, getBags } from "@/prisma/queries/bagQueries";
 
 export async function GET(req: NextApiRequest) {
   try {

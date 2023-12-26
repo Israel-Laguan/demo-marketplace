@@ -1,6 +1,6 @@
 import { NextResponse as res } from "next/server";
 import { NextApiRequest } from "next/types";
-import { createUser, getUsers } from "@/prisma/queries";
+import { createUser, getUsers } from "@/prisma/queries/userQueries";
 
 export async function GET() {
   try {
