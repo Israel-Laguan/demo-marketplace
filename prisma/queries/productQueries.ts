@@ -33,7 +33,7 @@ export async function createProduct(data: Product): Promise<Product> {
  */
 export async function getProducts(
   where?: Prisma.ProductWhereInput,
-  page: number = 0,
+  page: number = 1,
   pageSize: number = 10
 ): Promise<Product[]> {
   const skip = (page - 1) * pageSize;

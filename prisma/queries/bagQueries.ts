@@ -33,10 +33,10 @@ export async function createBag(data: Bag): Promise<Bag> {
  */
 export async function getBags(
   where?: Prisma.BagWhereInput,
-  page: number = 0,
+  page: number = 1,
   pageSize: number = 10
 ): Promise<Bag[]> {
-  const skip = (page - 1) * pageSize;
+  const skip = Math.abs((page - 1) * pageSize);
   return await prisma.bag
     .findMany({ where, skip, take: pageSize })
     .then(async (bags) => {
