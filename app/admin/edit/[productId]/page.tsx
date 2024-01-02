@@ -1,7 +1,6 @@
 "use client";
-import { useParams } from "next/navigation";
 import { title } from "@/components/primitives";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,7 +8,7 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Product } from "@/prisma/models";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useTransition } from "react";
 import updateProductById from "@/actions/updateProduct";
 import deleteProductById from "@/actions/deleteProduct";
 import getProductById from "@/actions/getProduct";
