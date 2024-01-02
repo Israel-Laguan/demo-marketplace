@@ -10,7 +10,8 @@
     "db:view": "prisma studio",
     "db:reset": "prisma migrate reset",
     "db:init": "prisma migrate dev && prisma db seed",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "ts-node --transpile-only --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
